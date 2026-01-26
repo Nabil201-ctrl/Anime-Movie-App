@@ -1,0 +1,93 @@
+# General
+.DS_Store
+.vscode/
+node_modules/
+
+# Backend (.NET)
+## Build directories
+bin/
+obj/
+
+## User-specific files
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+## NuGet packages
+*.nupkg
+*.snupkg
+packages/
+
+## Visual Studio temporary files
+*.cache
+*.log
+*.vs/
+
+## Debug / release output
+*.dll
+*.exe
+*.pdb
+
+## Publish output
+publish/
+out/
+
+## Test results
+TestResults/
+*.trx
+
+## Others
+*.dbmdl
+*.bak
+*.backup
+*.swp
+
+# Frontend (Expo)
+## Expo
+.expo/
+dist/
+web-build/
+expo-env.d.ts
+
+## Native
+.kotlin/
+*.orig.*
+*.jks
+*.p8
+*.p12
+*.key
+*.mobileprovision
+
+## Metro
+.metro-health-check*
+
+## debug
+npm-debug.*
+yarn-debug.*
+yarn-error.*
+
+## local env files
+.env*.local
+
+## typescript
+*.tsbuildinfo
+
+
+## generated native folders
+/ios
+/android
+
+# Security
+## Secrets
+appsettings.json
+appsettings.Development.json
+.env
+.env.*
+! .env.example
+*.pem
+*.key
+*.pfx
+*.p12
+id_rsa
+id_rsa.pub
