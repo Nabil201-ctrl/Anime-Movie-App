@@ -9,5 +9,7 @@ namespace Backend.Service
         Task<AnimeDto> GetAnimeByIdAsync(string id);
         Task<List<string>> GetGenresAsync();
         Task<AnimeListResponse> GetAnimeByGenreAsync(string genre, int page = 1, int size = 10);
+
+        Task<AnimeListResponse> HealthCheckAsync();
     }
 }

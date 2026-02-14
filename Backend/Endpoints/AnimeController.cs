@@ -15,6 +15,20 @@ namespace Backend.Endpoints
             _animeService = animeService;
         }
 
+        [HttpGet("health")]
+        public async Task<IActionResult>HealthCheck(){
+            try
+            {
+                var result = await _animeService.HealthCheckAsync();
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+
+        
         [HttpGet("search")]
         public async Task<IActionResult> Search([FromQuery] string title, [FromQuery] int page = 1, [FromQuery] int size = 10)
         {

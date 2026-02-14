@@ -18,12 +18,22 @@ namespace Backend.Service
             _httpClient = httpClient;
             _configuration = configuration;
             
-            _baseUrl = _configuration["AnimeApi:BaseUrl"];
-            _apiKey = _configuration["AnimeApi:ApiKey"];
-            _host = _configuration["AnimeApi:Host"];
+            _baseUrl = _configuration["AnimeApi:BaseUrl"] ?? throw new InvalidOperationException("Missing AnimeApi:BaseUrl configuration");
+            _apiKey = _configuration["AnimeApi:ApiKey"] ?? throw new InvalidOperationException("Missing AnimeApi:ApiKey configuration");
+            _host = _configuration["AnimeApi:Host"] ?? throw new InvalidOperationException("Missing AnimeApi:Host configuration");
 
             _httpClient.DefaultRequestHeaders.Add("x-rapidapi-key", _apiKey);
             _httpClient.DefaultRequestHeaders.Add("x-rapidapi-host", _host);
+        }
+
+        public async Task<AnimeListResponse> HealthCheckAsync()
+        {
+            var list = new AnimeListResponse
+            {
+                Data = new List<AnimeDto>(),
+                Meta = new MetaData { Page = 1, Size = 0, TotalData = 0, TotalPage = 0 }
+            };
+            return await Task.FromResult(list);
         }
 
         public async Task<AnimeListResponse> SearchAnimeAsync(string title, int page = 1, int size = 10)
@@ -60,12 +70,21 @@ namespace Backend.Service
                 {
                     // If it's just strings
                     if (element.ValueKind == JsonValueKind.String)
-                        genres.Add(element.GetString());
+                    {
+                        var s = element.GetString();
+                        if (s != null) genres.Add(s);
+                    }
                     // If it's objects
                     else if (element.TryGetProperty("_id", out var idProp))
-                        genres.Add(idProp.GetString());
+                    {
+                        var s = idProp.GetString();
+                        if (s != null) genres.Add(s);
+                    }
                     else if (element.TryGetProperty("name", out var nameProp))
-                        genres.Add(nameProp.GetString());
+                    {
+                        var s = nameProp.GetString();
+                        if (s != null) genres.Add(s);
+                    }
                 }
             }
             return genres;
@@ -83,7 +102,7 @@ namespace Backend.Service
             response.EnsureSuccessStatusCode();
             var content = await response.Content.ReadAsStringAsync();
             var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
-            return JsonSerializer.Deserialize<T>(content, options);
+            return JsonSerializer.Deserialize<T>(content, options)!;
         }
     }
 }
